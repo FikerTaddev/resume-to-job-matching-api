@@ -1,0 +1,22 @@
+# Dependency directories
+node_modules/
+.pnpm-store/
+
+# Build and distribution outputs
+dist/
+build/
+.next/
+out/
+
+# Coverages and lockfiles
+coverage/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Cache and environment files
+.eslintcache
+.cache/
+.env
+.env.*
+
