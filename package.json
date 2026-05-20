@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev":"ts-node-dev --respawn src/server.ts",
-    "build":"tsup",
+    "dev": "ts-node-dev --respawn src/server.ts",
+    "build": "tsup",
+    "test": "vitest",
+    "test:run":"vitest run",
     "start": "node dist/server.js",
-    "format":"prettier --write .",
+    "format": "prettier --write .",
     "prepare": "husky"
   },
   "keywords": [],
@@ -31,6 +33,7 @@
     "@commitlint/cli": "^21.0.1",
     "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
+    "@types/supertest": "^7.2.0",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
@@ -38,9 +41,11 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",
     "prettier": "^3.8.3",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4"
+    "typescript-eslint": "^8.59.4",
+    "vitest": "^4.1.6"
   }
 }
