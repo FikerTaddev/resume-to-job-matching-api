@@ -10,7 +10,9 @@
     "test:run": "vitest run",
     "start": "node dist/server.js",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "audit": "pnpm audit",
+    "audit:ci": "pnpm audit --audit-level high"
   },
   "keywords": [],
   "author": "",
