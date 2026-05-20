@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn src/server.ts",
     "build": "tsup",
     "test": "vitest",
-    "test:run":"vitest run",
+    "test:run": "vitest run",
     "start": "node dist/server.js",
     "format": "prettier --write .",
     "prepare": "husky"
@@ -47,5 +47,8 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.4",
     "vitest": "^4.1.6"
+  },
+  "dependencies": {
+    "@types/node": "^25.9.0"
   }
 }

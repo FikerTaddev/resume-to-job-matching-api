@@ -25,7 +25,6 @@ export default tseslint.config(
     },
     rules: {
       // 4. Custom API safety rules
-      "no-console": "warn", // Prevent accidental debug logs in prod
       "prettier/prettier": "error", // Force Prettier formatting
       "@typescript-eslint/no-explicit-any": "error", // Prevent type safety escapes
       "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
