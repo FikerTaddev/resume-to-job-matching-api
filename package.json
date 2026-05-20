@@ -17,6 +17,12 @@
       "onFail": "download"
     }
   },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
