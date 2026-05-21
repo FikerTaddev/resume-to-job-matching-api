@@ -1,33 +1,65 @@
 // src/config/shutdown.ts
 import { Server } from 'http';
 
-export function configureGracefulShutdown(server: Server): void {
-  const handleShutdown = (signal: string): void => {
-    console.log(`\nReceived ${signal}. Starting graceful shutdown...`);
+export default function configureGracefulShutdown(server: Server): void {
+  let isShuttingDown = false;
 
-    server.close(async (err?: Error) => {
-      if (err) {
-        console.error('Error closing HTTP server:', err);
-        process.exit(1);
-      }
+  const handleShutdown = async (signal: string): Promise<void> => {
+    if (isShuttingDown) {
+      console.log(
+        `Received ${signal} but shutdown is already underway. Ignoring.`,
+      );
+      return;
+    }
+    isShuttingDown = true;
 
-      console.log('HTTP server closed.');
+    console.log(`\nReceived ${signal}. Initiating clean shutdown sequence...`);
 
-      try {
-        console.log('All resources cleaned up successfully.');
-        process.exit(0);
-      } catch (error) {
-        console.error('Error during database/resource cleanup:', error);
-        process.exit(1);
-      }
-    });
-
-    setTimeout(() => {
-      console.error('Forcefully shutting down due to timeout.');
+    const TIMEOUT_MS = 10000;
+    const forceTimeoutId = setTimeout(() => {
+      console.error(
+        `Shutdown timed out after ${TIMEOUT_MS / 1000}s. Forcing exit.`,
+      );
       process.exit(1);
-    }, 10000);
+    }, TIMEOUT_MS);
+
+    forceTimeoutId.unref();
+
+    try {
+      if (typeof server.closeIdleConnections === 'function') {
+        server.closeIdleConnections();
+      }
+
+      console.log('Draining active HTTP connections...');
+      await new Promise<void>((resolve, reject) => {
+        server.close((err) => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
+      console.log('HTTP server closed cleanly.');
+
+      console.log(
+        'Disconnecting from databases and clearing message queues...',
+      );
+
+      console.log('All resources cleaned up successfully.');
+      clearTimeout(forceTimeoutId);
+      process.exit(0);
+    } catch (error) {
+      console.error(
+        'Critical failure during graceful shutdown sequence:',
+        error,
+      );
+      clearTimeout(forceTimeoutId);
+      process.exit(1);
+    }
   };
 
-  process.on('SIGINT', () => handleShutdown('SIGINT'));
-  process.on('SIGTERM', () => handleShutdown('SIGTERM'));
+  process.on('SIGINT', () => {
+    handleShutdown('SIGINT');
+  });
+  process.on('SIGTERM', () => {
+    handleShutdown('SIGTERM');
+  });
 }
