@@ -39,10 +39,6 @@ export default function configureGracefulShutdown(server: Server): void {
       });
       console.log('HTTP server closed cleanly.');
 
-      console.log(
-        'Disconnecting from databases and clearing message queues...',
-      );
-
       console.log('All resources cleaned up successfully.');
       clearTimeout(forceTimeoutId);
       process.exit(0);

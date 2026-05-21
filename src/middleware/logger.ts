@@ -2,7 +2,7 @@ import { logger } from '@config/log';
 import { pinoHttp } from 'pino-http';
 import { randomUUID } from 'node:crypto';
 import { IncomingMessage, ServerResponse } from 'node:http';
-const HttpLogger = pinoHttp({
+export const HttpLogger = pinoHttp({
   ...logger,
 
   genReqId: (req: IncomingMessage) => {
@@ -33,4 +33,4 @@ const HttpLogger = pinoHttp({
   },
 });
 
-export default HttpLogger;
+
