@@ -12,12 +12,11 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
-    "alwaysStrict": true,
 
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "allowSyntheticDefaultImports":true,
+    "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "types": ["node"],
 
@@ -27,8 +26,10 @@
     "sourceMap": true,
     "paths": {
       "@config/log": ["./src/config/log.js"],
-      "@config/shutdown":["./src/config/shutdown.js"],
-      "@middleware/log":["./src/middleware/logger.js"]
+      "@config/env": ["./src/config/env.js"],
+      "@config/shutdown": ["./src/config/shutdown.js"],
+      "@middleware/log": ["./src/middleware/logger.js"],
+      "@middleware/err":["./src/middleware/errorHandler.js"]
     }
   },
   "include": ["src/**/*", "vitest.config.ts"],

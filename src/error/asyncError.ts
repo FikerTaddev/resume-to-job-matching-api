@@ -1,0 +1,14 @@
+import { Request, Response, NextFunction } from 'express';
+
+// Define the shape of an async controller function
+type AsyncRequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<unknown>;
+
+export const catchAsync = (fn: AsyncRequestHandler) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    fn(req, res, next).catch(next); // Forward errors directly to next()
+  };
+};

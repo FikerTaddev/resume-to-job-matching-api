@@ -2,11 +2,18 @@ import { logger } from '@config/log';
 import { pinoHttp } from 'pino-http';
 import { randomUUID } from 'node:crypto';
 import { IncomingMessage, ServerResponse } from 'node:http';
+
 export const HttpLogger = pinoHttp({
   ...logger,
 
-  genReqId: (req: IncomingMessage) => {
-    return req.headers['x-request-id'] || randomUUID();
+  genReqId: (req: IncomingMessage, res?: ServerResponse) => {
+    const id = (req.headers['x-request-id'] as string) || randomUUID();
+
+    if (res && !res.headersSent) {
+      res.setHeader('X-Request-Id', id);
+    }
+
+    return id;
   },
 
   customReceivedMessage: (req: IncomingMessage) => {
@@ -18,8 +25,6 @@ export const HttpLogger = pinoHttp({
     res: ServerResponse,
     time: number,
   ) => {
-    res.setHeader('X-Request-Id', req.id as string);
-
     return `[ID: ${req.id}] Success ${req.method} ${req.url} -> HTTP ${res.statusCode} (${time}ms)`;
   },
 
@@ -28,9 +33,6 @@ export const HttpLogger = pinoHttp({
     res: ServerResponse,
     error: Error,
   ) => {
-    res.setHeader('X-Request-Id', req.id as string);
     return `[ID: ${req.id}] Failed ${req.method} ${req.url} -> HTTP ${res.statusCode} | ${error.message}`;
   },
 });
-
-
